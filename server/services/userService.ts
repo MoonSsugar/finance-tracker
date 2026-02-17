@@ -8,7 +8,7 @@ interface UpdateUserData {
 export const getUsers = async () => {
   const users = await prisma.user.findMany({
     include: {
-      trasactions: true
+      transactions: true
     }
   });
 
@@ -21,7 +21,7 @@ export const getUser = async (id: number) => {
       id
     },
     include: {
-      trasactions: true
+      transactions: true
     }
   });
 
@@ -35,7 +35,7 @@ export const addUser = async (email: string, name: string) => {
       email
     },
     include: {
-      trasactions: true
+      transactions: true
     }
   })
 
@@ -52,7 +52,7 @@ export const updateUser = async (id: number, data: UpdateUserData) => {
       ...(data.email && { email: data.email })
     },
     include: {
-      trasactions: true
+      transactions: true
     }
   })
 
@@ -65,7 +65,7 @@ export const removeUser = async (id: number) => {
       id
     },
     include: {
-      trasactions: true
+      transactions: true
     }
   })
 

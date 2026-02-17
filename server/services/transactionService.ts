@@ -12,16 +12,13 @@ export const getTransactions = async (userId: number) => {
   const transactions = await prisma.transaction.findMany({
     where: {
       userId
-    },
-    include: {
-      user: true
     }
   })
 
   return transactions;
 }
 
-export const getTransaction = async (userId: number, id: number) => {
+export const getTransaction = async ({ userId, id }: { userId: number, id: number }) => {
   const transaction = await prisma.transaction.findFirst({
     where: {
       id,

@@ -4,8 +4,8 @@ import type { Request, Response, NextFunction } from "express";
 
 export const getTransactions = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const id = parseInt(req.params.id as string)
-    const transactions = await transactionService.getTransactions(id);
+    const userId = parseInt(req.query.userId as string)
+    const transactions = await transactionService.getTransactions(userId);
 
     res.status(200).json(transactions);
   } catch (err) {
@@ -17,7 +17,7 @@ export const getTransaction = async (req: Request, res: Response, next: NextFunc
   try {
     const id = parseInt(req.params.id as string);
     const userId = parseInt(req.query.userId as string);
-    const transaction = await transactionService.getTransaction(id, userId);
+    const transaction = await transactionService.getTransaction({ userId, id });
 
     if (!transaction) {
       const error = {
@@ -46,7 +46,7 @@ export const addTransaction = async (req: Request, res: Response, next: NextFunc
       date
     }
 
-    const newTransaction = transactionService.addTransaction(userId, data);
+    const newTransaction = await transactionService.addTransaction(userId, data);
 
     res.status(201).json(newTransaction);
   } catch (err) {
@@ -54,13 +54,13 @@ export const addTransaction = async (req: Request, res: Response, next: NextFunc
   }
 }
 
-export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
+export const updateTransaction = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = parseInt(req.params.id as string);
     const userId = parseInt(req.query.userId as string);
     const validatedData = updateTransactionSchema.parse(req.body);
 
-    const transaction = await transactionService.getTransaction(id, userId);
+    const transaction = await transactionService.getTransaction({id, userId});
 
     if (!transaction) {
       const error = {
@@ -79,11 +79,11 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
   }
 }
 
-export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteTransaction = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = parseInt(req.params.id as string);
     const userId = parseInt(req.query.userId as string);
-    const transaction = await transactionService.getTransaction(id, userId);
+    const transaction = await transactionService.getTransaction({id, userId});
 
     if (!transaction) {
       const error = {

@@ -35,7 +35,7 @@ export const getUser = async (req: Request, res: Response, next: NextFunction) =
 export const addUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const validatedData = addUserSchema.parse(req.body);
-    const newUser = userService.addUser(validatedData.email, validatedData.name);
+    const newUser = await userService.addUser(validatedData.email, validatedData.name);
 
     res.status(201).json(newUser);
   } catch(err) {
