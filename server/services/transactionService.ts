@@ -1,3 +1,4 @@
+import fa from "zod/v4/locales/fa.js";
 import { prisma } from "../lib/prisma";
 import type { UpdateTxDto } from "../utils/transactionValidateSchemas";
 
@@ -12,8 +13,11 @@ export const getTransactions = async (userId: number) => {
   const transactions = await prisma.transaction.findMany({
     where: {
       userId
+    },
+    include: { 
+      user: false
     }
-  })
+  });
 
   return transactions;
 }
@@ -25,7 +29,7 @@ export const getTransaction = async ({ userId, id }: { userId: number, id: numbe
       userId
     },
     include: {
-      user: true
+      user: false
     }
   });
 
@@ -42,7 +46,7 @@ export const addTransaction = async (userId: number, data: CreateTxDto) => {
       ...(data.date && { date: data.date })
     },
     include: {
-      user: true
+      user: false
     }
   });
 
@@ -67,7 +71,7 @@ export const updateTransaction = async (id: number, userId: number, data: Update
       ...(data.type && { type: data.type })
     },
     include: {
-      user: true
+      user: false
     }
   });
 
@@ -86,7 +90,7 @@ export const removeTransaction = async (id: number, userId: number) => {
       id
     },
     include: {
-      user: true
+      user: false
     }
   });
 

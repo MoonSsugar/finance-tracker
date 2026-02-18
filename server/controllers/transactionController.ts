@@ -4,7 +4,11 @@ import type { Request, Response, NextFunction } from "express";
 
 export const getTransactions = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userId = parseInt(req.query.userId as string)
+    if (!req.user) {
+      throw new Error("You do not have access");
+    }
+    const userId = req.user.userId;
+
     const transactions = await transactionService.getTransactions(userId);
 
     res.status(200).json(transactions);
@@ -15,8 +19,12 @@ export const getTransactions = async (req: Request, res: Response, next: NextFun
 
 export const getTransaction = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    if (!req.user) {
+      throw new Error("You do not have access");
+    }
+
     const id = parseInt(req.params.id as string);
-    const userId = parseInt(req.query.userId as string);
+    const userId = req.user.userId;
     const transaction = await transactionService.getTransaction({ userId, id });
 
     if (!transaction) {
@@ -36,7 +44,11 @@ export const getTransaction = async (req: Request, res: Response, next: NextFunc
 
 export const addTransaction = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userId = parseInt(req.query.userId as string)
+    if (!req.user) {
+      throw new Error("You do not have access");
+    }
+
+    const userId = req.user.userId;
     const validatedData = addTransactionSchema.parse(req.body);
 
     const date = validatedData.date ? new Date(validatedData.date) : undefined;
@@ -56,8 +68,12 @@ export const addTransaction = async (req: Request, res: Response, next: NextFunc
 
 export const updateTransaction = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    if (!req.user) {
+      throw new Error("You do not have access");
+    }
+
     const id = parseInt(req.params.id as string);
-    const userId = parseInt(req.query.userId as string);
+    const userId = req.user.userId;
     const validatedData = updateTransactionSchema.parse(req.body);
 
     const transaction = await transactionService.getTransaction({id, userId});
@@ -81,8 +97,12 @@ export const updateTransaction = async (req: Request, res: Response, next: NextF
 
 export const deleteTransaction = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    if (!req.user) {
+      throw new Error("You do not have access");
+    }
+    
     const id = parseInt(req.params.id as string);
-    const userId = parseInt(req.query.userId as string);
+    const userId = req.user.userId;
     const transaction = await transactionService.getTransaction({id, userId});
 
     if (!transaction) {

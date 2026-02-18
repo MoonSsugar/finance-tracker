@@ -7,8 +7,12 @@ interface UpdateUserData {
 
 export const getUsers = async () => {
   const users = await prisma.user.findMany({
-    include: {
-      transactions: true
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      transactions: true,
+      createdAt: true
     }
   });
 
@@ -20,26 +24,16 @@ export const getUser = async (id: number) => {
     where: {
       id
     },
-    include: {
-      transactions: true
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      transactions: true,
+      createdAt: true
     }
   });
 
   return user;
-}
-
-export const addUser = async (email: string, name: string) => {
-  const newUser = await prisma.user.create({
-    data: {
-      name,
-      email
-    },
-    include: {
-      transactions: true
-    }
-  })
-
-  return newUser;
 }
 
 export const updateUser = async (id: number, data: UpdateUserData) => {

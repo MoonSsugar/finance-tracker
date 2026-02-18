@@ -17,7 +17,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   const secret = process.env.JWT_SECRET;
 
   if (!secret) {
-    return res.status(500).json({ msg: "Servero Error" });
+    return res.status(500).json({ msg: "Server Error" });
   }
 
   try {
