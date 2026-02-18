@@ -45,8 +45,10 @@ export const updateUser = async (id: number, data: UpdateUserData) => {
       ...(data.name && { name: data.name }),
       ...(data.email && { email: data.email })
     },
-    include: {
-      transactions: true
+    select: {
+      id: true,
+      name: true,
+      email: true
     }
   })
 
@@ -58,8 +60,10 @@ export const removeUser = async (id: number) => {
     where: {
       id
     },
-    include: {
-      transactions: true
+    select: {
+      id: true,
+      name: true,
+      email: true
     }
   })
 
