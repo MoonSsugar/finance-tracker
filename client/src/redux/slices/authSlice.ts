@@ -3,7 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { User } from "../../types/apiTypes";
 
 interface AuthState {
-  user: User | null,
+  user: Omit<User, "password" | "name" | "transactions"> | null,
   token: string | null,
   isAuthenticated: boolean
 }
@@ -20,17 +20,20 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setCredentials: (state, action: PayloadAction<{ user: User, token: string }>) => {
-      state.user = action.payload.user;
+    setCredentials: (
+      state, 
+      { 
+        payload: { user, token },
+      }: PayloadAction<{ user: Omit<User, "password" | "name" | "transactions">, token: string }>
+    ) => {
+      state.user = user;
       state.isAuthenticated = true;
-      state.token = action.payload.token;
-      localStorage.setItem("token", action.payload.token);
+      state.token = token;
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
-      localStorage.removeItem("token");
     }
   }
 })

@@ -5,7 +5,7 @@ import type { Request, Response, NextFunction } from "express";
 export const getTransactions = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.user) {
-      throw new Error("You do not have access");
+      throw new Error("You do not have an access");
     }
     const userId = req.user.userId;
 
@@ -20,7 +20,7 @@ export const getTransactions = async (req: Request, res: Response, next: NextFun
 export const getTransaction = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.user) {
-      throw new Error("You do not have access");
+      throw new Error("You do not have an access");
     }
 
     const id = parseInt(req.params.id as string);
@@ -45,7 +45,7 @@ export const getTransaction = async (req: Request, res: Response, next: NextFunc
 export const addTransaction = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.user) {
-      throw new Error("You do not have access");
+      throw new Error("You do not have an access");
     }
 
     const userId = req.user.userId;
@@ -69,7 +69,7 @@ export const addTransaction = async (req: Request, res: Response, next: NextFunc
 export const updateTransaction = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.user) {
-      throw new Error("You do not have access");
+      throw new Error("You do not have an access");
     }
 
     const id = parseInt(req.params.id as string);
@@ -98,7 +98,7 @@ export const updateTransaction = async (req: Request, res: Response, next: NextF
 export const deleteTransaction = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.user) {
-      throw new Error("You do not have access");
+      throw new Error("You do not have an access");
     }
     
     const id = parseInt(req.params.id as string);

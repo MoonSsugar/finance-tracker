@@ -1,12 +1,16 @@
 import { register, login } from "../services/authService";
 import type { Request, Response, NextFunction } from "express";
+import type { ResponseError } from "../types/types";
 
 export const registerUser =  async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      throw new Error("Missed a required property");
+      const error: ResponseError = new Error("Missed required properties");
+      error.status = 400;
+
+      return next(error);
     }
 
     const newUser = await register({ email, name, password});
@@ -22,7 +26,10 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
     const { email, password } = req.body;
 
     if (!email || !password) {
-      throw new Error("Missed a required property");
+      const error: ResponseError = new Error("Missed a required property");
+      error.status = 400;
+      
+      return next(error);
     }
 
     const loggedUser = await login({ email, password });
